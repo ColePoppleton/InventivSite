@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <MenuBar />
-    <!-- Your other content goes here -->
     <router-view />
   </div>
 </template>
@@ -18,10 +17,8 @@ export default {
 
 <style>
 /* Your global styles */
-body, html {
+body {
   margin: 0;
-  padding: 0;
-  width: 100%;
   font-family: 'Arial', sans-serif;
 }
 
@@ -30,7 +27,7 @@ body, html {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  width: 100%; /* Ensure full width */
+  width: 100%;
   background-color: #222; /* Set your desired background color */
   color: #fff;
 }

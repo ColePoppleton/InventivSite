@@ -1,22 +1,26 @@
 <template>
   <section id="heroSection" class="hero" ref="heroSection">
-    <FallingBall v-for="(ball, index) in balls" :key="index" :left="ball.left" :duration="ball.duration" />
+    <FallingBall v-for="(ball, index) in balls" :key="index" :left="ball.left" :duration="ball.duration" :color="ball.color" />
     <div class="hero-content">
       <h1>Inventiv</h1>
       <p>Elevating your Digital Vision</p>
       <ContactButton />
     </div>
+    <button class="color-cycle-button" @click="cycleColors">Click Me!</button>
   </section>
+  <cssCodeEmulator />
 </template>
 
 <script>
 import FallingBall from './icons/FallingBall.vue';
 import ContactButton from './ContactButton.vue';
+import cssCodeEmulator from './cssCodeEmulator.vue';
 
 export default {
   data() {
     return {
       balls: [],
+      ballColor: '#f1ab27', // Initial color
     };
   },
   mounted() {
@@ -25,19 +29,33 @@ export default {
   methods: {
     generateFallingBalls() {
       const heroSection = this.$refs.heroSection;
-      const numberOfBalls = 30;
+      const numberOfBalls = 160;
 
       for (let i = 0; i < numberOfBalls; i++) {
+        const ballColor = this.getRandomColor();
         this.balls.push({
-          left: `${Math.random() * heroSection.clientWidth}px`,
+          left: `${Math.random() * (heroSection.clientWidth - 10)}px`, // Subtract ball width to stay within bounds
           duration: `${Math.random() * 3 + 1}s`,
+          color: ballColor,
         });
       }
+      // Set initial color for all balls
+      this.ballColor = this.balls[0].color;
+    },
+    cycleColors() {
+      this.ballColor = this.getRandomColor();
+      this.balls.forEach((ball) => {
+        ball.color = this.ballColor;
+      });
+    },
+    getRandomColor() {
+      return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
     },
   },
   components: {
     FallingBall,
     ContactButton,
+    cssCodeEmulator
   },
 };
 </script>
@@ -53,6 +71,7 @@ export default {
   background-color: #000;
   height: 70vh; /* Adjust the height as needed */
   overflow: hidden;
+  width: 100%; /* Ensure full width */
 }
 
 .hero-content {
@@ -96,15 +115,47 @@ p {
   background-color: #45a049;
 }
 
-/* Styles for falling balls */
 .falling-ball {
   position: absolute;
-  width: 10px;
+  width: 10px; /* Adjust width as needed */
   height: 10px;
-  background-color: #3498db;
   border-radius: 50%;
   animation: fallAnimation linear infinite;
   z-index: 1;
+  left: 0; /* Start from the left edge */
+  background-color: var(--ball-color, #f1ab27); /* Use the dynamic ballColor here */
+}
+
+/* Button styles */
+.color-cycle-button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 10px 20px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  background-color: #f1ab27;
+  border: 2px solid #000;
+  border-radius: 10px;
+  box-shadow: 5px 5px 0px #000;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.color-cycle-button:hover {
+  background-color: #fff;
+  color: #f1ab27;
+  border: 2px solid #f1ab27;
+  box-shadow: 5px 5px 0px #f1ab27;
+}
+
+.color-cycle-button:active {
+  background-color: #fcf414;
+  box-shadow: none;
+  transform: translateY(4px);
 }
 
 @keyframes fallAnimation {

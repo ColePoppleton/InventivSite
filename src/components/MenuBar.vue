@@ -2,7 +2,9 @@
   <nav class="menu-bar" :class="{ 'sticky': isSticky }">
     <div class="container">
       <ul>
-        <li><router-link to="/">Home</router-link></li>
+        <li>
+          <router-link to="/" :class="{ 'active': isHomePage }">Home</router-link>
+        </li>
         <li><router-link to="/about">About Us</router-link></li>
         <li><router-link to="/contact">Contact Us</router-link></li>
       </ul>
@@ -11,12 +13,20 @@
 </template>
 
 <script>
+import Hero from './Hero.vue'; // Adjust the path based on your actual file structure
+
 export default {
   name: 'MenuBar',
   data() {
     return {
       isSticky: false,
     };
+  },
+  computed: {
+    isHomePage() {
+      // Check if the current route is the home route
+      return this.$route.name === 'home';
+    },
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
@@ -79,6 +89,6 @@ a {
 }
 
 a:hover {
-  color: #45a049;
+  color: #f1ab27;
 }
 </style>
